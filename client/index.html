@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aspire Bank</title>
+    <!-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+    <script>
+        document.getElementById('menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // FAQ Toggle with Animation
+        document.querySelectorAll('.faq-item button').forEach((button) => {
+            button.addEventListener('click', () => {
+                const answer = button.nextElementSibling;
+                answer.classList.toggle('hidden');
+                gsap.to(answer, { duration: 0.3, height: answer.classList.contains('hidden') ? 0 : 'auto', opacity: answer.classList.contains('hidden') ? 0 : 1 });
+            });
+        });
+
+        // Animation on Page Load
+        window.onload = () => {
+            gsap.from("#hero", { duration: 1, y: -100, opacity: 0, ease: "bounce" });
+            gsap.from("#how-to-qualify", { duration: 1, delay: 0.5, y: 20, opacity: 0 });
+            gsap.from("#account-overview", { duration: 1, delay: 1, y: 20, opacity: 0 });
+            gsap.from("#benefits", { duration: 1, delay: 1.5, y: 20, opacity: 0 });
+            gsap.from("#faq", { duration: 1, delay: 2, y: 20, opacity: 0 });
+
+            // Add entrance animations to benefit items
+            document.querySelectorAll('.benefit-item').forEach((item, index) => {
+                setTimeout(() => {
+                    item.classList.add('show');
+                }, 300 * index); // Stagger the animation
+            });
+        };
+
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('show');
+            // Optional: Toggle the visibility of the menu items
+            if (mobileMenu.style.display === "block") {
+                mobileMenu.style.display = "none";
+            } else {
+                mobileMenu.style.display = "block";
+            }
+        });
+           
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCKs2PaOClQ6995XMSEuLWENcD3baTM974",
+            authDomain: "rental-app-107b6.firebaseapp.com",
+            databaseURL: "https://rental-app-107b6-default-rtdb.firebaseio.com",
+            projectId: "rental-app-107b6",
+            storageBucket: "rental-app-107b6.firebasestorage.app",
+            messagingSenderId: "137399102586",
+            appId: "1:137399102586:web:13a610be00a1d7b41cdfc3"
+        };
+        // Firebase db
+        const database = firebase.database();
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Login functionality
+        document.getElementById("loginForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const email = this.email.value;
+            const password = this.password.value;
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then(() => {
+                    window.location.href = 'user.html';
+                })
+                .catch(error => {
+                    alert("Error: " + error.message);
+                });
+        });
+
+        // Register Page
+        // Generate a 10-digit account number
+        function generateAccountNumber() {
+            let accountNumber = '';
+            for (let i = 0; i < 10; i++) {
+                accountNumber += Math.floor(Math.random() * 10);
+            }
+            return accountNumber;
+        }
+
+        // Show section based on the step
+        function showSection(step) {
+            const sections = document.querySelectorAll('.section');
+            const steps = document.querySelectorAll('.progress-bar div');
+
+            sections.forEach((section, index) => {
+                section.classList.toggle('active', index === step - 1);
+            });
+
+            steps.forEach((stepElement, index) => {
+                stepElement.classList.toggle('active', index === step - 1);
+            });
+        }
+
+        // Check Password Strength
+        function checkPasswordStrength() {
+            const password = document.getElementById('password').value;
+            const strengthIndicator = document.getElementById('passwordStrength');
+            let strength = "Weak";
+            const criteria = [
+                /.{8,}/,
+                /[a-z]/,
+                /[A-Z]/,
+                /[0-9]/,
+                /[!@#$%^&*(),.?":{}|<>]/
+            ];
+
+            let count = criteria.reduce((acc, regex) => acc + (regex.test(password) ? 1 : 0), 0);
+
+            switch (count) {
+                case 5:
+                    strength = "Very Strong";
+                    break;
+                case 4:
+                    strength = "Strong";
+                    break;
+                case 3:
+                    strength = "Medium";
+                    break;
+                case 2:
+                case 1:
+                    strength = "Weak";
+                    break;
+            }
+            strengthIndicator.innerText = `Password Strength: ${strength}`;
+        }
+
+        // Function to display the success modal
+        function showSuccessModal() {
+            const modal = document.getElementById('successModal');
+            modal.classList.add('show');
+            setTimeout(() => {
+                modal.classList.remove('show');
+                window.location.href = 'user.html'; // Redirect to user.html
+            }, 3000); // Delay 3 seconds
+        }
+
+        // Submit form and save data to Firebase
+        document.getElementById("registrationForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+            const userData = {};
+            formData.forEach((value, key) => {
+                userData[key] = value;
+            });
+
+            userData.accountNumber = generateAccountNumber();
+
+            // Check if transaction pins match
+            if (userData.transactionPin !== userData.confirmTransactionPin) {
+                alert("Transaction PINs do not match.");
+                return;
+            }
+
+            // Register user with email and password
+            auth.createUserWithEmailAndPassword(userData.email, userData.password)
+                .then(userCredential => {
+                    delete userData.password; // Don't save password to database
+                    const userId = userCredential.user.uid;
+
+                    // Store user data in the database
+                    database.ref("users/" + userId).set(userData)
+                        .then(() => {
+                            showSuccessModal(); // Show custom success message
+                        })
+                        .catch(error => {
+                            alert("Error saving user data: " + error.message);
+                        });
+                })
+                .catch(error => {
+                    alert("Error: " + error.message);
+                });
+        });
+
+    </script>
+  </body>
+</html>
