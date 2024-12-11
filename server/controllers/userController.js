@@ -27,6 +27,7 @@ export const create = async (req, res) => {
         return res.status(500).json({ errormessage: error.message})
     }
 }
+
 export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -141,8 +142,6 @@ export const userDeposit = async (req, res) => {
         res.status(500).json({ errorMessage: error.message });
     }
 }
-
-
 
 export const retryTransfer = async (req, res) => {
     // creates a transaction history and save in history array

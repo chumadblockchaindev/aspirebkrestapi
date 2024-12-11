@@ -1,5 +1,7 @@
 import express from 'express'
-import { create, deleteUser, fetchAllUsers, generateCode, getSpecificUser, login, retryTransfer, updateUserBalance, userDeposit, userTransfer } from '../controllers/userController.js'
+import { create, deleteUser, fetchAllUsers, generateCode, 
+        getSpecificUser, login, retryTransfer, updateUserBalance, 
+        userDeposit, userTransfer } from '../controllers/userController.js'
 
 const route = express.Router()
 
