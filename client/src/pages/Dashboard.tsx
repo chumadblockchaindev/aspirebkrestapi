@@ -35,7 +35,7 @@ const Dashboard = () => {
                         navigate('/login')
                     }
 
-                await axios.post(`http://localhost:5000/api/user`, {id: storedData.user._id})
+                await axios.post(`https://aspirebk-server.onrender.com/api/user`, {id: storedData.user._id})
                 .then(res => {
                     setUserData(res.data.user)
                     setLoading(false);  
@@ -86,7 +86,7 @@ function handleDeposit(e: FormEvent) {
 
     console.log(finalData)
 
-    axios.put("http://localhost:5000/api/user/deposit", finalData)
+    axios.put("https://aspirebk-server.onrender.com/api/user/deposit", finalData)
     .then(res => {
         if(res.statusText === 'OK')
         toast.success("Deposit Pending Contact Customer Support", { position: 'top-center' })
@@ -120,7 +120,7 @@ function handleTransFer(e: FormEvent) {
         }
     }
 
-    axios.put("http://localhost:5000/api/user/transfer", finalData)
+    axios.put("https://aspirebk-server.onrender.com/api/user/transfer", finalData)
     .then(res => {
         if(res.data.message == 'Pin Incorrect')
             toast.success("Pin Incorrect", { position: 'top-center' })

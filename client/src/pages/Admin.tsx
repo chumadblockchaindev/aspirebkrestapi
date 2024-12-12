@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 
 const Admin = () => {
   return (
@@ -22,14 +23,14 @@ const Admin = () => {
             <ul
               tabIndex={0}
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-              <li><a>Users</a></li>
-              <li><a>Transactions</a></li>
-              <li><a>Logout</a></li>
+              <li><Link to="">Users</Link></li>
+              <li><Link to="">Transactions</Link></li>
+              <li><Link to="">Logout</Link></li>
             </ul>
           </div>
         </div>
         <div className="navbar-center">
-          <a className="btn btn-ghost text-xl">Admin Panel</a>
+          <Link to="" className="btn btn-ghost text-xl">Admin Panel</Link>
         </div>
       </div>
       <div>

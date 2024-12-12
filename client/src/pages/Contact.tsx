@@ -1,5 +1,6 @@
 import styles from '../styles/Contact.module.css'
 import AboutImg from '../assets/white-crossed-male-room-laptop.jpg'
+import { Link } from 'react-router-dom'
 
 const Contact = () => {
   return (
@@ -12,7 +13,7 @@ const Contact = () => {
             <i className="fas fa-bars"></i>
         </div>
         <ul className={styles.mobile_menu} id="mobile-menu">
-            <li><a href="index.html">Home</a></li>
+            <li><Link to="/index">Home</Link></li>
         </ul>
     </nav>
 
@@ -49,7 +50,7 @@ const Contact = () => {
         <h2>Join Us</h2>
         <p>Become a part of the Aspire Bank community, where your aspirations are valued. Together, we can create a
             brighter financial future.</p>
-        <a href="getstarted.html" className="cta-button">Get Started Today</a>
+        <Link to="/getstarted" className="cta-button">Get Started Today</Link>
     </section>
 
     <footer className={styles.footer_style}>

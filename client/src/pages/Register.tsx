@@ -88,7 +88,7 @@ const Register = () => {
     setLoading(true)
     // call the post api
     try {
-      axios.post("http://localhost:5000/api/createaccount", data)
+      axios.post("https://aspirebk-server.onrender.com/api/createaccount", data)
       .then(res => {
         if(res.status === 201){
           toast.success(res.data.message, {position: "top-right"})

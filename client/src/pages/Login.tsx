@@ -1,7 +1,7 @@
 import { FormEvent, useState } from 'react'
 import styles from '../styles/Login.module.css'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 
 const Login = () => {
@@ -15,7 +15,7 @@ const Login = () => {
     const finalData = Object.fromEntries(formData.entries());
     console.log(finalData)
 
-    axios.post("http://localhost:5000/api/login", finalData)
+    axios.post("https://aspirebk-server.onrender.com/api/login", finalData)
     .then(res => {
       if(res.data.message === "success"){
         localStorage.setItem(
@@ -53,7 +53,7 @@ const Login = () => {
               {loading? <div className='flex items-center justify-center gap-1'>Logging in <span className="loading loading-dots loading-sm"></span>
                 </div>: "Login"}
             </button>
-            <p>Don't have an account? <a href="register.html">Register here</a></p>
+            <p>Don't have an account? <Link to="/register">Register here</Link></p>
         </form>
     </div>
     </div>

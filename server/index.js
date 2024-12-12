@@ -11,16 +11,16 @@ const app = express()
 app.use(bodyParser.json())
 app.use(cors())
 
-const PORT = process.env.PORT
-const MONGOURL = process.env.MONGO_URL
+// const PORT = process.env.PORT
+// const MONGOURL = process.env.MONGO_URL
 const MONGODB_CLOUD_STRING = process.env.MONGODB_CLOUD_STRING
 
 mongoose
         .connect(MONGODB_CLOUD_STRING)
         .then(() => {
             console.log("DB connected successfully.")
-            app.listen(PORT, ()=> {
-                console.log(`Server is running on port: ${PORT}`)
+            app.listen(5000, ()=> {
+                console.log(`Server is running on port: ${5000}`)
             })
         })
         .catch(error => console.error(error))

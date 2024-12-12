@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import styles from '../styles/OpenAccount.module.css'
 
 const OpenAccount = () => {
@@ -23,7 +24,7 @@ const OpenAccount = () => {
           </div>
 
           {/* <!-- Redirect button to registration form page --> */}
-          <a href="register.html" className={styles.cta_button}>Let's Go!</a>
+          <Link to="/register" className={styles.cta_button}>Let's Go!</Link>
       </div>
 
     </div>

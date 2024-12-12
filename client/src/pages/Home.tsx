@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import HeroImg from '../assets/finance-4858797_1280.jpg'
 // import styles from '../styles/Home.css'
 
@@ -9,23 +10,24 @@ const Home = () => {
           <nav className="flex items-center justify-between px-6 py-4">
               <div className="text-lg md:text-2xl font-bold text-white">Aspire Bank</div>
               <ul className="hidden md:flex space-x-6">
-                  <li><a href="getstarted.html" className="text-white hover:text-gray-200">Open Account</a></li>
-                  <li><a href="#benefits" className="text-white hover:text-gray-200">Benefits</a></li>
-                  <li><a href="#faq" className="text-white hover:text-gray-200">FAQ</a></li>
-                  <li><a href="aboutus.html" target="_blank" className="text-white hover:text-gray-200">Contact Us</a></li>
+                  <li><Link to="getstarted" className="text-white hover:text-gray-200">Open Account</Link></li>
+                  <li><Link to="#benefits" className="text-white hover:text-gray-200">Benefits</Link></li>
+                  <li><Link to="#faq" className="text-white hover:text-gray-200">FAQ</Link></li>
+                  <li><Link to="aboutus" target="_blank" className="text-white hover:text-gray-200">Contact Us</Link></li>
               </ul>
+              <Link to="/login">
               <button
-                  className="hidden md:block text-white border-2 px-4 py-2 rounded hover:bg-white hover:text-gray-900 transition"
-                  onClick={() => window.location.href='login.html'}>Login</button>
+                  className="hidden md:block text-white border-2 px-4 py-2 rounded hover:bg-white hover:text-gray-900 transition">Login</button>
+              </Link>
               <button id="menu-btn" className="md:hidden text-white text-2xl focus:outline-none">
                   <i className="fas fa-bars"></i>
               </button>
           </nav>
           <ul id="mobile-menu" className="md:hidden bg-gray-800 text-white text-center hidden space-y-4 py-4">
-              <li><a href="register.html" className="hover:text-gray-300">Open Account</a></li>
-              <li><a href="#benefits" className="hover:text-gray-300">Benefits</a></li>
-              <li><a href="#faq" className="hover:text-gray-300">FAQ</a></li>
-              <li><a href="#contact" className="hover:text-gray-300">Contact Us</a></li>
+              <li><Link to="register" className="hover:text-gray-300">Open Account</Link></li>
+              <li><Link to="#benefits" className="hover:text-gray-300">Benefits</Link></li>
+              <li><Link to="#faq" className="hover:text-gray-300">FAQ</Link></li>
+              <li><Link to="#contact" className="hover:text-gray-300">Contact Us</Link></li>
           </ul>
       </header>
 
@@ -36,8 +38,9 @@ const Home = () => {
               <div className="animate__animated animate__fadeIn">
                   <h1 className="text-3xl md:text-5xl font-extrabold mb-4">Earn $300 with Aspire Smart Checking</h1>
                   <p className="text-md md:text-xl mb-6">Open an account today and enjoy exclusive benefits!</p>
-                  <button className="px-4 md:px-6 py-2 md:py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                      onClick={() => window.location.href='login.html'}>Login</button>
+                  <Link to="/login">
+                    <button className="px-4 md:px-6 py-2 md:py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Login</button>
+                  </Link>
               </div>
           </div>
       </section>
@@ -177,20 +180,20 @@ const Home = () => {
       <footer className="bg-red-600 text-white py-8">
           <div className="container mx-auto text-center">
               <div className="flex justify-center space-x-4 mb-4">
-                  <a href="aboutus.html" target="_blank" className="text-gray-300 hover:text-white">About Us</a>
-                  {/* <a href="#services" className="text-gray-300 hover:text-white">Services</a> */}
-                  <a href="#contact" className="text-gray-300 hover:text-white">Contact</a>
-                  <a href="Aspire Policy.html" className="text-gray-300 hover:text-white">Privacy Policy</a>
+                  <Link to="aboutus" target="_blank" className="text-gray-300 hover:text-white">About Us</Link>
+                  {/* <Link to="#services" className="text-gray-300 hover:text-white">Services</Link> */}
+                  <Link to="#contact" className="text-gray-300 hover:text-white">Contact</Link>
+                  <Link to="Aspire Policy" className="text-gray-300 hover:text-white">Privacy Policy</Link>
               </div>
               <div className="flex justify-center space-x-6 mb-4">
-                  <a href="https://facebook.com" target="_blank" className="text-gray-300 hover:text-white"><i
-                          className="fab fa-facebook-f"></i></a>
-                  <a href="https://twitter.com" target="_blank" className="text-gray-300 hover:text-white"><i
-                          className="fab fa-twitter"></i></a>
-                  <a href="https://instagram.com" target="_blank" className="text-gray-300 hover:text-white"><i
-                          className="fab fa-instagram"></i></a>
-                  <a href="https://linkedin.com" target="_blank" className="text-gray-300 hover:text-white"><i
-                          className="fab fa-linkedin-in"></i></a>
+                  <Link to="https://facebook.com" target="_blank" className="text-gray-300 hover:text-white"><i
+                          className="fab fa-facebook-f"></i></Link>
+                  <Link to="https://twitter.com" target="_blank" className="text-gray-300 hover:text-white"><i
+                          className="fab fa-twitter"></i></Link>
+                  <Link to="https://instagram.com" target="_blank" className="text-gray-300 hover:text-white"><i
+                          className="fab fa-instagram"></i></Link>
+                  <Link to="https://linkedin.com" target="_blank" className="text-gray-300 hover:text-white"><i
+                          className="fab fa-linkedin-in"></i></Link>
               </div>
               <p className="text-gray-400">&copy; 2024 Aspire Bank. All rights reserved.</p>
               <p>Location: Adelaide, SA, Australia</p>
