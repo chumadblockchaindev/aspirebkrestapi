@@ -9,7 +9,10 @@ dotenv.config()
 
 const app = express()
 app.use(bodyParser.json())
-app.use(cors())
+app.use(cors({
+    origin: "https://www.aspbk.online",
+    credentials: true
+}))
 
 // const PORT = process.env.PORT
 // const MONGOURL = process.env.MONGO_URL
