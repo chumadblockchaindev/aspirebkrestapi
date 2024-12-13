@@ -14,7 +14,7 @@ const Login = () => {
     let formData = new FormData(event.target as HTMLFormElement);
     const finalData = Object.fromEntries(formData.entries());
 
-    await axios.post("https://aspirebk-server.onrender.com/api/login", finalData)
+    await axios.post("https://aspirebkrestapi.vercel.app/api/login", finalData)
     .then(res => {
       if(res.data.message === "success"){
         localStorage.setItem(

@@ -12,11 +12,11 @@ app.use(bodyParser.json())
 app.use(cors())
 
 // const PORT = process.env.PORT
-const MONGOURL = process.env.MONGO_URL
-// const MONGODB_CLOUD_STRING = process.env.MONGODB_CLOUD_STRING
+// const MONGOURL = process.env.MONGO_URL
+const MONGODB_CLOUD_STRING = process.env.MONGODB_CLOUD_STRING
 
 mongoose
-        .connect(MONGOURL)
+        .connect(MONGODB_CLOUD_STRING)
         .then(() => {
             console.log("DB connected successfully.")
             app.listen(5000, ()=> {

@@ -1,5 +1,5 @@
 import axios from "axios"
-import { FormEvent, useEffect, useState } from "react"
+import { FormEvent, useState } from "react"
 import toast from "react-hot-toast"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 
@@ -16,7 +16,7 @@ const UserDetail = () => {
         const { id } = params
 
         // make axios call to the delete api and go back to admin home
-        await axios.delete(`http://localhost:5000/api/user/delete/${id}`)
+        await axios.delete(`https://aspirebkrestapi.vercel.app/api/user/delete/${id}`)
         .then(res => {
         if(res.statusText === "OK"){
             toast.success(res.data.message, { position: 'top-center' })
@@ -30,7 +30,7 @@ const UserDetail = () => {
         const { id } = params
         
         // make axios call to the generate code api
-        await axios.post(`http://localhost:5000/api/user/code/${id}`,{ historyid: _id })
+        await axios.post(`https://aspirebkrestapi.vercel.app/api/user/code/${id}`,{ historyid: _id })
         .then(res => {
         if(res.statusText === "OK"){
             // set the code and open the modal
@@ -45,12 +45,13 @@ const UserDetail = () => {
         const { id } = params
 
         // make axios call to the update balance api
-        await axios.put(`http://localhost:5000/api/update/balance/${id}`, { amount: Number(compState.amount) })
+        await axios.put(`https://aspirebkrestapi.vercel.app/api/update/balance/${id}`, { amount: Number(compState.amount) })
         .then(res => {
             console.log(res.data)
             if(res.data.message === "success"){
                 toast.success("Balance Updated", { position: 'top-center' })
                 setCompState(prev => ({...prev, editModal: ''}))
+                navigate('/admin')
             }
         })
         .catch(err => console.error(err))

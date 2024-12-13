@@ -88,7 +88,7 @@ const Register = () => {
     setLoading(true)
     // call the post api
     try {
-      axios.post("https://aspirebk-server.onrender.com/api/create/account", data)
+      axios.post("https://aspirebkrestapi.vercel.app/api/create/account", data)
       .then(res => {
         if(res.status === 201){
           toast.success(res.data.message, {position: "top-right"})
