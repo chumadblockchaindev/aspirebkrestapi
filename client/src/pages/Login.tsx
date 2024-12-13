@@ -13,9 +13,8 @@ const Login = () => {
     setLoading(true)
     let formData = new FormData(event.target as HTMLFormElement);
     const finalData = Object.fromEntries(formData.entries());
-    console.log(finalData)
 
-    axios.post("https://aspirebk-server.onrender.com/api/login", finalData)
+    await axios.post("https://aspirebk-server.onrender.com/api/login", finalData)
     .then(res => {
       if(res.data.message === "success"){
         localStorage.setItem(
@@ -23,9 +22,7 @@ const Login = () => {
           JSON.stringify({ userToken: res.data.token, user: res.data.user})
         )
         toast.success("Login Sucessful", { position: 'top-center' })
-        setTimeout(() => {
-          navigate('/dashboard')
-        }, 2000)
+        navigate('/dashboard')
       }
     })
     .catch(err => console.error(err))

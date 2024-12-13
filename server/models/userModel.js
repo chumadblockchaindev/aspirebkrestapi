@@ -115,6 +115,14 @@ const userSchema = new mongoose.Schema({
                         type: Number,
                         required: true
                     },
+                    accname: {
+                        type: Number,
+                        required: true
+                    },
+                    accnum: {
+                        type: Number,
+                        required: true
+                    },
                     txnType: {
                         type: String,
                         required: true
@@ -123,16 +131,10 @@ const userSchema = new mongoose.Schema({
                         type: String,
                         required: true
                     },
-                    step: {
-                        type: Number,
-                        required: true
-                    },
                     code: {
                         type: String,
                         required: true
                     },
-                
-                
             }
         ]
 });

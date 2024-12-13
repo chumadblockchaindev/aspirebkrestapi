@@ -1,6 +1,29 @@
+import axios from "axios"
+import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 
 const Admin = () => {
+  const { state } = useLocation()
+  const[data, setData] = useState<{_id: string, firstName: string, email: string, balance: Number}[]>(state)
+
+  useEffect(() => {
+    async function fetchAllUsers() {
+      try {
+        const storedData = JSON.parse(localStorage.getItem("adminToken") as string)
+        console.log(storedData.adminToken)
+        await axios.post('http://localhost:5000/api/admin/allusers', { adminToken: storedData.adminToken })
+        .then(res => {
+          setData(res.data)
+      })
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    fetchAllUsers()
+  }, [data])
+
   return (
     <div>
       <div className="navbar bg-base-100">
@@ -23,9 +46,8 @@ const Admin = () => {
             <ul
               tabIndex={0}
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-              <li><Link to="">Users</Link></li>
-              <li><Link to="">Transactions</Link></li>
-              <li><Link to="">Logout</Link></li>
+              <li><Link to="/admin">Users</Link></li>
+              <li><Link to="/adminlogin">Logout</Link></li>
             </ul>
           </div>
         </div>
@@ -42,17 +64,24 @@ const Admin = () => {
               <th></th>
               <th>User</th>
               <th>Email</th>
-              <th>Online/Offline</th>
+              <th>Balance</th>
+              <th>...</th>
             </tr>
           </thead>
           <tbody>
             {/* row 1 */}
-            <tr>
-              <th>1</th>
-              <td>Godswill Chukwuma</td>
-              <td>ranierurtola49@gmail.com</td>
-              <td>Offline</td>
-            </tr>
+            {
+              data.map((val, index) => (
+                <tr key={index}>
+                  <th>{index + 1}</th>
+                  <td>{val.firstName}</td>
+                  <td>{val.email}</td>
+                  <td>${val.balance.toString()}</td>
+                  <td><Link className="bg-red-700 text-white font-medium p-3 drop-shadow-md" 
+                      to={'/userdetail/'+val._id} state={val}>View</Link></td>
+                </tr>
+              ))
+            }
           </tbody>
         </table>
       </div>

@@ -23,7 +23,7 @@ const History = ({ history }: {history:any}) => {
                         <tr key={index}>
                             <th>{data._id.slice(15,-4)}</th>
                             <td>{data.date.slice(0,-5)}</td>
-                            <td>{data.amount}</td>
+                            <td>${data.amount}</td>
                             <td>{data.txnType}</td>
                             <td className={data.status == "completed" ? "text-green-600" : "text-red-600"}>
                                 <Link to={`/history/`+data._id} state={data}>{data.status}</Link></td>

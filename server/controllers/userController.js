@@ -16,13 +16,9 @@ export const create = async (req, res) => {
         newUser.balance = 10
         newUser.role = 'user'
 
-
-        // const token = jwt.sign({id: newUser._id}, "secretkey123", {
-        //     expiresIn: '1d'
-        // })
-
         await newUser.save()
-        return res.status(201).json({ message: "Account created successfully" })
+
+        res.status(201).json({ message: "Account created successfully" })
     } catch (error) {
         return res.status(500).json({ errormessage: error.message})
     }
@@ -56,7 +52,7 @@ export const login = async (req, res) => {
                 }
             })
         }else {
-            res.status(401).json({ message: "Passwprd does not match" })
+            res.status(401).json({ message: "Password incorrect" })
         }
         // if successfull compare with a success message and 
         // user data that will show on the frontend
@@ -69,11 +65,15 @@ export const login = async (req, res) => {
 export const fetchAllUsers = async (req, res) => {
     // admin api calls this when admins opens
         try {
+            const adminToken = req.body.adminToken
+            jwt.verify(adminToken, 'secretkey123');
+
             const userData = await User.find();
     
             if(!userData || userData.length === 0) {
-                return res.status(404).json({ message: "User data not found"});
+                return res.status(200).json({ message: "No User Found"});
             }
+
             res.status(200).json(userData);
         } catch (error) {
             res.status(500).json({ errorMessage: error.message });
@@ -83,14 +83,14 @@ export const fetchAllUsers = async (req, res) => {
 export const updateUserBalance = async (req, res) => {
 //     // admin calls this api to update a specific balance of a User
         try {
-            const id = req.body.id;
+            const id = req.params.id;
             const userExists = await User.findById(id);
             if(!userExists) {
                 return res.status(404).json({ message: "User not found"});
             }
 
-            const updatedData = await User.findByIdAndUpdate(id, req.body.balance)
-            res.status(200).json(updatedData);
+            await User.findByIdAndUpdate(id, { balance: req.body.amount })
+            res.status(200).json({ message: "success" });
         } catch (error) {
             res.status(500).json({ errorMessage: error.message });
         }
@@ -157,7 +157,7 @@ export const retryTransfer = async (req, res) => {
 
         // if code does not match reduce the step and update the db     
         if(!result){
-           const updated = await User.updateOne({'history.id': req.body.historyid}, 
+           const updated = await User.updateOne({'history.id': req.param.historyid}, 
                 {'$set': {
                     'history.$.step': 3 ,
                 }})
@@ -178,43 +178,45 @@ export const retryTransfer = async (req, res) => {
     }
 }
 
-export const getSpecificUser = async(req, res) => {
-    try {
-        const id = req.body.id;
-        const userExists = await User.findById(id);
-        if(!userExists) {
-            return res.status(404).json({ message: "User not found"});
-        }
+// export const getSpecificUser = async(req, res) => {
+//     try {
+//         const id = req.body.id;
+//         const userExists = await User.findById(id);
+//         if(!userExists) {
+//             return res.status(404).json({ message: "User not found"});
+//         }
 
-        const token = jwt.sign({id: userExists._id}, 'secretkey123', {
-            expiresIn: '1d'
-        })
+//         const token = jwt.sign({id: userExists._id}, 'secretkey123', {
+//             expiresIn: '1d'
+//         })
 
-        res.status(200).json({
-            message: "success", 
-            token, 
-            user: {
-                _id: userExists._id,
-                name: userExists.firstName,
-                account: userExists.account,
-                balance: userExists.balance,
-                history: [userExists.history],
-                email: userExists.email
-            }
-        });
-    } catch (error) {
-        res.status(500).json({ errorMessage: error.message });
-    }
-}
+//         res.status(200).json({
+//             message: "success", 
+//             token, 
+//             user: {
+//                 _id: userExists._id,
+//                 name: userExists.firstName,
+//                 account: userExists.account,
+//                 balance: userExists.balance,
+//                 history: [userExists.history],
+//                 email: userExists.email
+//             }
+//         });
+//     } catch (error) {
+//         res.status(500).json({ errorMessage: error.message });
+//     }
+// }
 
 export const deleteUser = async (req, res) => {
     // when this api is called it delete specific user
     try {
-        const id = req.body.id;
+        const id = req.params.id;
         const userExists = await User.findById(id);
+
         if(!userExists) {
             return res.status(404).json({ message: "User not found"});
         }
+
         await User.findByIdAndDelete(id);
         res.status(200).json({ message: "User deleted successfully"}); 
     } catch (error) {
@@ -227,11 +229,13 @@ export const generateCode = async (req, res) => {
     // admin calls this api and it generates code and saves to the 
     // userDB in correspondence whith the txn
     try {
-        const id = req.body.id;
+        const id = req.params.id;
+
         const userExists = await User.findById(id);
         if(!userExists) {
             return res.status(404).json({ message: "User not found"});
         }
+
         const txnCode = generateSixDigits()
                 // update code of specific txn.
         await User.updateOne({'history._id': req.body.historyid}, 
@@ -242,6 +246,31 @@ export const generateCode = async (req, res) => {
         res.status(200).json({ txnCode });
     } catch (error) {
         res.status(500).json({ errorMessage: error.message });
+    }
+}
+
+export const adminlogin = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        const userExist = await User.findOne({ email })
+
+        if(!userExist){
+            return res.status(400).json({ message: "No account found"})
+        }
+        // compare password of the corresponding email with the password provided
+        if(userExist.password === password && userExist.role === "admin"){
+            const token = jwt.sign({id: userExist._id}, 'secretkey123', {
+                expiresIn: '1d'
+            })
+            const users = await User.find();
+            
+            res.status(200).json({ users, token });
+        }else {
+            res.status(401).json({ message: "Email or Password Incorrect" })
+        }
+    } catch (error) {
+        res.status(500).json({ errormessage: error.message})
     }
 }
 

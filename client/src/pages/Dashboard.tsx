@@ -5,7 +5,13 @@ import axios from "axios"
 import toast from "react-hot-toast"
 
 export interface User {
-     _id: string, email: string, name: string, account: string, balance: string, history: HistoryInterface}
+     _id: string, 
+     email: string, 
+     name: string, 
+     account: string, 
+     balance: string, 
+     history: HistoryInterface
+}
 
 export type HistoryInterface = {
     _id: string,
@@ -24,21 +30,21 @@ const Dashboard = () => {
     const[notifyModal, setNotifyModal] = useState(false)
     const[loading, setLoading] = useState(true)
 
+    
 
     useEffect(() => {
         // check if no token then redirect to login page
         // if there is token, use the _id in the storage to fetch userdata afresh
         async function fetchData(){
             try {
-                    if(!storedData){
-                        console.log(storedData)
-                        navigate('/login')
-                    }
+                if(storedData.user._id == null) {
+                    navigate('/login')
+                } 
 
                 await axios.post(`https://aspirebk-server.onrender.com/api/user`, {id: storedData.user._id})
                 .then(res => {
                     setUserData(res.data.user)
-                    setLoading(false);  
+                    setLoading(false) 
                 })
             } catch (error) {
                 console.error(error)
@@ -50,15 +56,10 @@ const Dashboard = () => {
 
     function logout() {
      localStorage.setItem("user_data", '');
-
-     setTimeout(() => {
-        navigate('/login')
-     }, 3000)
      toast.success("Logout Successful", {position: "top-center"})
+     navigate('/login')
     }
 
-
-    
 function handleDeposit(e: FormEvent) {
     // Get form values and store in the database 
     // The rest api would return the response and the app should update
@@ -133,7 +134,9 @@ function handleTransFer(e: FormEvent) {
 
     if(loading){
         return (
-            <div>Loading...</div>
+            <div className="flex justify-center items-center h-screen">
+                    <span className="loading loading-ring loading-lg"></span>
+            </div>
         )
     }
 
