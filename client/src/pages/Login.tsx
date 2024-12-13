@@ -17,7 +17,6 @@ const Login = () => {
     await axios.get("https://aspirebkrestapi.vercel.app/api/login", finalData)
     .then(res => {
       if(res.data.message === "success"){
-        console.log(res.data)
         localStorage.setItem(
           'user_data',
           JSON.stringify({ userToken: res.data.token, user: res.data.user})

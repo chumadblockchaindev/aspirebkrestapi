@@ -84,7 +84,6 @@ const Register = () => {
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
     if(!isLastStep) return next()
-    console.log(data)
     setLoading(true)
     // call the post api
     try {

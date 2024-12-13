@@ -29,7 +29,7 @@ export const login = async (req, res) => {
         const { email, password } = req.body;
 
         const userExist = await User.findOne({ email })
-
+        console.log(userExist)
         if(!userExist){
             return res.status(400).json({ message: "No account found with this email please register"})
         }
