@@ -10,7 +10,7 @@ dotenv.config()
 const app = express()
 app.use(bodyParser.json())
 app.use(cors({
-    origin: "https://www.aspbk.online",
+    origin: ['https://www.aspbk.online', 'http://localhost:5173'],
     credentials: true
 }))
 

@@ -11,7 +11,6 @@ const Admin = () => {
     async function fetchAllUsers() {
       try {
         const storedData = JSON.parse(localStorage.getItem("adminToken") as string)
-        console.log(storedData.adminToken)
         await axios.post('https://aspirebkrestapi.vercel.app/api/admin/allusers', { adminToken: storedData.adminToken })
         .then(res => {
           setData(res.data)
