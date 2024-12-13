@@ -15,7 +15,7 @@ const AdminLogin = () => {
     const finalData = Object.fromEntries(formData.entries());
 
     // set token after successful login
-    axios.post("https://aspirebkrestapi.vercel.app/api/admin/login", finalData)
+    axios.get("https://aspirebkrestapi.vercel.app/api/admin/login", finalData)
     .then(res => {
       if(res.statusText === 'OK'){
         localStorage.setItem(
@@ -24,6 +24,8 @@ const AdminLogin = () => {
         )
         toast.success("Login Sucessful", { position: 'top-center' })
         navigate('/admin', { state: res.data.users })
+      }else if(res.status === 401) {
+        console.log(res.data.message)
       }
     })
     .catch(err => console.error(err))

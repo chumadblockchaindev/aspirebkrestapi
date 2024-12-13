@@ -6,14 +6,14 @@ import { adminlogin, create, deleteUser, fetchAllUsers, generateCode,
 const route = express.Router()
 
 route.post("/create/account", create)
-route.post("/login", login)
+route.get("/login", login)
 route.put("/update/balance/:id", updateUserBalance)
 route.put("/user/transfer", userTransfer)
 route.put("/user/deposit", userDeposit)
 route.put("/retry/transfer", retryTransfer)
 route.delete("/user/delete/:id", deleteUser)
 route.post("/user/code/:id", generateCode)
-route.post("/admin/login", adminlogin)
+route.get("/admin/login", adminlogin)
 route.post("/admin/allusers", fetchAllUsers)
 
 
