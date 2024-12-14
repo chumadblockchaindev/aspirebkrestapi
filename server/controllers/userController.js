@@ -113,8 +113,7 @@ export const userTransfer = async (req, res) => {
             { $push: { history: req.body.newtransfer  } },
             { new: true }
         )
-                
-        
+                  
         res.status(200).json(updatedData);
     } catch (error) {
         res.status(500).json({ errorMessage: error.message });

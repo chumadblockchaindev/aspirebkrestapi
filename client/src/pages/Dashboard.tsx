@@ -29,7 +29,6 @@ const Dashboard = () => {
     const[transferModal, setTransferModal] = useState(false)
     const[notifyModal, setNotifyModal] = useState(false)
     const[loading, setLoading] = useState(true)
-    const[errMsg, setErrMsg] = useState()
 
     useEffect(() => {
         // check if no token then redirect to login page

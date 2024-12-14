@@ -103,10 +103,6 @@ const userSchema = new mongoose.Schema({
         },
         history: [
             {
-                    id: {
-                        type: String,
-                        required: false        
-                    },
                     date: {
                         type: String,
                         required: true
