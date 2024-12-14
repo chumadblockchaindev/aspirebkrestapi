@@ -18,9 +18,8 @@ const UserDetail = () => {
         // make axios call to the delete api and go back to admin home
         await axios.delete(`https://aspirebkrestapi.vercel.app/api/user/delete/${id}`)
         .then(res => {
-        if(res.statusText === "OK"){
+        if(res.status === 200){
             toast.success(res.data.message, { position: 'top-center' })
-            navigate('/admin')
         }
         })
         .catch(err => console.error(err))
@@ -32,7 +31,7 @@ const UserDetail = () => {
         // make axios call to the generate code api
         await axios.post(`https://aspirebkrestapi.vercel.app/api/user/code/${id}`,{ historyid: _id })
         .then(res => {
-        if(res.statusText === "OK"){
+        if(res.status === 200){
             // set the code and open the modal
             setCompState(prev => ({...prev, codeModal: 'modal-open', code: res.data.txnCode }))
         }
@@ -55,7 +54,6 @@ const UserDetail = () => {
             }
         })
         .catch(err => console.error(err))
-        console.log(compState)
     }
 
   return (

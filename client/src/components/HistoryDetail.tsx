@@ -25,7 +25,7 @@ const HistoryDetail = () => {
 
             await axios.put(`https://aspirebkrestapi.vercel.app/api/retry/transfer/${params.id}`, finalData)
             .then(res => {
-                if(res.statusText === 'OK') {
+                if(res.status === 200) {
                     setShowDetail(!showDetail)
                     toast("Transfer Successful", { position: "top-center" })
                 }
@@ -75,8 +75,8 @@ const HistoryDetail = () => {
                                 {/* if there is a button in form, it will close the modal */}
                                 <button className="btn" >Submit</button>
                             </form>
-                            {errMsg && <div className='bg-green-700 p-2 text-neutral-50 font-semibold'>{errMsg}</div>}
                         </div>
+                        {errMsg && <div className='bg-green-700 p-2 text-neutral-50 font-semibold text-center m-2'>{errMsg}</div>}
                     </div>
             </dialog>
     </div>

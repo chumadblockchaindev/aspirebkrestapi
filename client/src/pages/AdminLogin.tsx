@@ -18,15 +18,13 @@ const AdminLogin = () => {
     // set token after successful login
     axios.post("https://aspirebkrestapi.vercel.app/api/admin/login", finalData)
     .then(res => {
-      if(res.statusText === 'OK'){
+      if(res.status === 200){
         localStorage.setItem(
           'adminToken',
           JSON.stringify({ adminToken: res.data.token })
         )
         toast.success("Login Sucessful", { position: 'top-center' })
         navigate('/admin', { state: res.data.users })
-      }else if(res.status === 401) {
-        console.log(res.data.message)
       }
     })
     .catch(err => {
@@ -71,7 +69,7 @@ const AdminLogin = () => {
                         </div>: "Sign in"}
                 </button>
             </form>
-            {errMsg && <div className='bg-green-700 p-2 text-neutral-50 font-semibold'>{errMsg}</div>}
+            {errMsg && <div className='bg-green-700 p-2 text-neutral-50 font-semibold m-2'>{errMsg}</div>}
         </div>
     </div>
   )

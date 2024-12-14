@@ -146,18 +146,18 @@ export const userDeposit = async (req, res) => {
 export const retryTransfer = async (req, res) => {
     // creates a transaction history and save in history array
     try {
-        const id = req.params.id;
+        // const id = req.params.id;
 
-        const userExists = await User.findById(id);
-        if(!userExists) {
-            return res.status(404).json({ message: "User not found" });
-        }
+        // const userExists = await User.findById(id);
+        // if(!userExists) {
+        //     return res.status(404).json({ message: "User not found" });
+        // }
         // check if code matcth if it matches  update txn. to success 
         const result = await User.findOne({'history': {$elemMatch: {code: req.body.code}}})
 
         // if code does not match reduce the step and update the db     
         if(!result){
-            return res.status(401).json({ message: "Code Incorrect" })
+            return res.status(401).json({ message: "Code Incorrect Contact Support" })
         }
 
         // update transaction to success and add history balance to main balance

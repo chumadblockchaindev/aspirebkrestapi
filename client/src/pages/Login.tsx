@@ -56,7 +56,7 @@ const Login = () => {
             </button>
             <p>Don't have an account? <Link to="/register">Register here</Link></p>
         </form>
-        {errMsg && <div className='bg-green-700 p-2 text-neutral-50 font-semibold'>{errMsg}</div>}
+        {errMsg && <div className='bg-green-700 p-2 text-neutral-50 font-semibold m-2'>{errMsg}</div>}
     </div>
     </div>
   )

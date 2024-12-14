@@ -89,9 +89,10 @@ function handleDeposit(e: FormEvent) {
 
     axios.put("https://aspirebkrestapi.vercel.app/api/user/deposit", finalData)
     .then(res => {
-        if(res.statusText === 'OK')
-        toast.success("Deposit Pending Contact Customer Support", { position: 'top-center' })
-        setDepositModal(!depositModal)
+        if(res.status === 200) {
+            toast.success("Deposit Pending Contact Customer Support", { position: 'top-center' })
+            setDepositModal(!depositModal)
+        }
     })
     .catch(err => console.error(err))
 }
@@ -123,11 +124,10 @@ function handleTransFer(e: FormEvent) {
 
     axios.put("https://aspirebkrestapi.vercel.app/api/user/transfer", finalData)
     .then(res => {
-        if(res.data.message == 'Pin Incorrect')
-            toast.success("Pin Incorrect", { position: 'top-center' })
-        if(res.statusText === 'OK')
-        toast.success("Transfer Sent", { position: 'top-center' })
-        setTransferModal(!transferModal)
+        if(res.status == 200){
+            toast.success("Transfer Sent", { position: 'top-center' })
+            setTransferModal(!transferModal)
+        }
     })
     .catch(err => console.error(err))
 }
