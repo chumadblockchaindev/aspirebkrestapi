@@ -5,8 +5,7 @@ import { useLocation } from "react-router-dom"
 
 const Admin = () => {
   const { state } = useLocation()
-  let _state: {_id: string, firstName: string, email: string, balance: Number}[] = state
-  const[data, setData] = useState<{_id: string, firstName: string, email: string, balance: Number}[]>()
+  const[data, setData] = useState<{_id: string, firstName: string, email: string, balance: Number}[]>(state)
 
   useEffect(() => {
     async function fetchAllUsers() {
@@ -71,7 +70,7 @@ const Admin = () => {
           <tbody>
             {/* row 1 */}
             {
-              _state.map((val, index) => (
+              data.map((val, index) => (
                 <tr key={index}>
                   <th>{index + 1}</th>
                   <td>{val.firstName}</td>
