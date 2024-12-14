@@ -258,9 +258,9 @@ export const adminlogin = async (req, res) => {
             const token = jwt.sign({id: userExist._id}, 'secretkey123', {
                 expiresIn: '1d'
             })
-            const users = await User.find();
+            // const users = await User.find();
             
-            res.status(200).json({ users, token });
+            res.status(200).json({ token });
         }else {
             res.status(401).json({ message: "Email or Password Incorrect" })
         }
