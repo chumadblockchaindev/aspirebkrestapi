@@ -29,8 +29,7 @@ const Dashboard = () => {
     const[transferModal, setTransferModal] = useState(false)
     const[notifyModal, setNotifyModal] = useState(false)
     const[loading, setLoading] = useState(true)
-
-    
+    const[errMsg, setErrMsg] = useState()
 
     useEffect(() => {
         // check if no token then redirect to login page
@@ -117,19 +116,18 @@ function handleTransFer(e: FormEvent) {
             ...formObj,
             txnType: 'transfer',
             status: 'pending',
-            step: 5,
             code: ""
         }
     }
 
     axios.put("https://aspirebkrestapi.vercel.app/api/user/transfer", finalData)
     .then(res => {
-        if(res.status == 200){
+        if(res.status === 200){
             toast.success("Transfer Sent", { position: 'top-center' })
             setTransferModal(!transferModal)
         }
     })
-    .catch(err => console.error(err))
+    .catch(err => toast(err.response.data.message, {position: "top-center"}))
 }
 
     if(loading){

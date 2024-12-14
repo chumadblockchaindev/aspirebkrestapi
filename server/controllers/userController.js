@@ -101,17 +101,17 @@ export const userTransfer = async (req, res) => {
     try {
         const id = req.body.id;
         const userExists = await User.findById(id);
-        if(!userExists) {
-            return res.status(404).json({ message: "User not found"});
-        }
+        // if(!userExists) {
+        //     return res.status(404).json({ message: "User not found"});
+        // }
         if(userExists.pin !== req.body.newtransfer.pin){
             return res.status(404).json({ message: "Pin Incorrect"});
         }   
 
         const updatedData = await User.findOneAndUpdate(
-            { _id: req.body.id }, 
+            { _id: id }, 
             { $push: { history: req.body.newtransfer  } },
-            { new:true }
+            { new: true }
         )
                 
         
