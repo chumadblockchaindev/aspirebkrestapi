@@ -7,6 +7,7 @@ import toast from 'react-hot-toast'
 const Login = () => {
   const[loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const[errMsg, setErrMsg] = useState()
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault()
@@ -14,7 +15,7 @@ const Login = () => {
     let formData = new FormData(event.target as HTMLFormElement);
     const finalData = Object.fromEntries(formData.entries());
 
-    await axios.get("https://aspirebkrestapi.vercel.app/api/login", finalData)
+    await axios.post("https://aspirebkrestapi.vercel.app/api/login", finalData)
     .then(res => {
       if(res.data.message === "success"){
         localStorage.setItem(
@@ -25,7 +26,10 @@ const Login = () => {
         navigate('/dashboard')
       }
     })
-    .catch(err => console.error(err))
+    .catch(err => {
+      setErrMsg(err.response.data.message)
+      setLoading(false)
+    })
   } 
 
   return (
@@ -52,6 +56,7 @@ const Login = () => {
             </button>
             <p>Don't have an account? <Link to="/register">Register here</Link></p>
         </form>
+        {errMsg && <div className='bg-green-700 p-2 text-neutral-50 font-semibold'>{errMsg}</div>}
     </div>
     </div>
   )

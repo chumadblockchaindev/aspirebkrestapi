@@ -1,18 +1,38 @@
-import { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { FormEvent, useEffect, useState } from 'react'
+import { useLocation, useParams } from 'react-router-dom'
 import { HistoryInterface } from '../pages/Dashboard'
+import axios from 'axios'
+import toast from 'react-hot-toast'
 
 const HistoryDetail = () => {
     // const {id} = useParams()
     const { state } = useLocation()
     const[user, setUser] = useState<HistoryInterface>()
     const[showDetail, setShowDetail] = useState(false)
+    const[errMsg, setErrMsg] = useState()
+    const params = useParams()
 
     useEffect(() => {
         if(state){
             setUser(state)
         }
     }, [location])
+
+    async function handleSubmit(event: FormEvent) {
+            event.preventDefault()
+            let formData = new FormData(event.target as HTMLFormElement);
+            const finalData = Object.fromEntries(formData.entries());
+
+            await axios.put(`https://aspirebkrestapi.vercel.app/api/retry/transfer/${params.id}`, finalData)
+            .then(res => {
+                if(res.statusText === 'OK') {
+                    setShowDetail(!showDetail)
+                    toast("Transfer Successful", { position: "top-center" })
+                }
+            })
+            .catch(err => setErrMsg(err.response.data.message))
+    }
+
   return (
     <div>
         <h3 className='uppercase bold text-xl p-4'>{user?.txnType} Details</h3>
@@ -49,12 +69,13 @@ const HistoryDetail = () => {
                     </form>
                         <h3 className="font-bold text-lg pl-5">Enter Transaction Code</h3>
                         <div className="modal-action mt-2">
-                            <form method="dialog">
-                            <input type="text" placeholder="Enter Code" className="input input-bordered w-full max-w-xs mb-4" />
+                            <form method="dialog" onSubmit={(event) => handleSubmit(event)}>
+                            <input type="text" name='code' placeholder="Enter Code" className="input input-bordered w-full max-w-xs mb-4" />
 
                                 {/* if there is a button in form, it will close the modal */}
-                                <button className="btn" type='button'>Submit</button>
+                                <button className="btn" >Submit</button>
                             </form>
+                            {errMsg && <div className='bg-green-700 p-2 text-neutral-50 font-semibold'>{errMsg}</div>}
                         </div>
                     </div>
             </dialog>

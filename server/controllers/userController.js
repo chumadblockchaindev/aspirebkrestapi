@@ -29,7 +29,7 @@ export const login = async (req, res) => {
         const { email, password } = req.body;
 
         const userExist = await User.findOne({ email })
-        console.log(userExist)
+
         if(!userExist){
             return res.status(400).json({ message: "No account found with this email please register"})
         }
@@ -146,66 +146,61 @@ export const userDeposit = async (req, res) => {
 export const retryTransfer = async (req, res) => {
     // creates a transaction history and save in history array
     try {
-        const id = req.body.id;
+        const id = req.params.id;
 
         const userExists = await User.findById(id);
         if(!userExists) {
-            return res.status(404).json({ message: "User not found"});
+            return res.status(404).json({ message: "User not found" });
         }
         // check if code matcth if it matches  update txn. to success 
         const result = await User.findOne({'history': {$elemMatch: {code: req.body.code}}})
 
         // if code does not match reduce the step and update the db     
         if(!result){
-           const updated = await User.updateOne({'history.id': req.param.historyid}, 
-                {'$set': {
-                    'history.$.step': 3 ,
-                }})
+            return res.status(401).json({ message: "Code Incorrect" })
+        }
 
-                if (updated) return res.status(401).json({ message: "Code Incorrect" })
-            } 
-        // update transaction to success and deduct balance
-            await User.updateOne({'history._id': req.body.historyid}, 
-                {'$set': {
-                    'history.$.status': 'completed',
-                }})
+        // update transaction to success and add history balance to main balance
+        await User.updateOne({'history._id': req.body.historyid}, 
+            {'$set': {
+                'history.$.status': 'completed',
+        }})
+        // const finalUpdate = await User.findByIdAndUpdate(id, {'balance': '200'})
 
-             const finalUpdate = await User.findByIdAndUpdate(id, {'balance': '200'})
-
-        res.status(200).json(finalUpdate)
+        res.status(200).json({ message: "success" })
     } catch (error) {
         res.status(500).json({ errorMessage: error.message });
     }
 }
 
-// export const getSpecificUser = async(req, res) => {
-//     try {
-//         const id = req.body.id;
-//         const userExists = await User.findById(id);
-//         if(!userExists) {
-//             return res.status(404).json({ message: "User not found"});
-//         }
+export const getSpecificUser = async(req, res) => {
+    try {
+        const id = req.body.id;
+        const userExists = await User.findById(id);
+        if(!userExists) {
+            return res.status(404).json({ message: "User not found"});
+        }
 
-//         const token = jwt.sign({id: userExists._id}, 'secretkey123', {
-//             expiresIn: '1d'
-//         })
+        const token = jwt.sign({id: userExists._id}, 'secretkey123', {
+            expiresIn: '1d'
+        })
 
-//         res.status(200).json({
-//             message: "success", 
-//             token, 
-//             user: {
-//                 _id: userExists._id,
-//                 name: userExists.firstName,
-//                 account: userExists.account,
-//                 balance: userExists.balance,
-//                 history: [userExists.history],
-//                 email: userExists.email
-//             }
-//         });
-//     } catch (error) {
-//         res.status(500).json({ errorMessage: error.message });
-//     }
-// }
+        res.status(200).json({
+            message: "success", 
+            token, 
+            user: {
+                _id: userExists._id,
+                name: userExists.firstName,
+                account: userExists.account,
+                balance: userExists.balance,
+                history: [userExists.history],
+                email: userExists.email
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ errorMessage: error.message });
+    }
+}
 
 export const deleteUser = async (req, res) => {
     // when this api is called it delete specific user

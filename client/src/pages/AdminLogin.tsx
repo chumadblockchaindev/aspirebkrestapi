@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 const AdminLogin = () => {
     const[loading, setLoading] = useState(false)
+    const[errMsg, setErrMsg] = useState()
 
   const navigate =  useNavigate();
 
@@ -28,7 +29,10 @@ const AdminLogin = () => {
         console.log(res.data.message)
       }
     })
-    .catch(err => console.error(err))
+    .catch(err => {
+      setErrMsg(err.response.data.message)
+      setLoading(false)
+    })
   }
 
   return (
@@ -67,6 +71,7 @@ const AdminLogin = () => {
                         </div>: "Sign in"}
                 </button>
             </form>
+            {errMsg && <div className='bg-green-700 p-2 text-neutral-50 font-semibold'>{errMsg}</div>}
         </div>
     </div>
   )

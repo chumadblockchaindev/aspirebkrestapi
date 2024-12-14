@@ -8,11 +8,11 @@ import cors from 'cors'
 dotenv.config()
 
 const app = express()
-app.use(bodyParser.json())
 app.use(cors({
     origin: ['https://www.aspbk.online', 'http://localhost:5173'],
     credentials: true
 }))
+app.use(bodyParser.json())
 
 // const PORT = process.env.PORT
 // const MONGOURL = process.env.MONGO_URL
