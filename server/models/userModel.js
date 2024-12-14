@@ -108,15 +108,15 @@ const userSchema = new mongoose.Schema({
                         required: true
                     },
                     amount: {
-                        type: Number,
+                        type: String,
                         required: true
                     },
                     accname: {
-                        type: Number,
+                        type: String,
                         required: true
                     },
                     accnum: {
-                        type: Number,
+                        type: String,
                         required: true
                     },
                     txnType: {
