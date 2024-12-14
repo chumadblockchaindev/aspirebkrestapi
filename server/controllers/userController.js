@@ -146,7 +146,7 @@ export const userDeposit = async (req, res) => {
 export const retryTransfer = async (req, res) => {
     // creates a transaction history and save in history array
     try {
-        // const id = req.params.id;
+        const _id = req.params.id;
 
         // const userExists = await User.findById(id);
         // if(!userExists) {
@@ -161,7 +161,7 @@ export const retryTransfer = async (req, res) => {
         }
 
         // update transaction to success and add history balance to main balance
-        await User.updateOne({'history._id': req.body.historyid}, 
+        await User.updateOne({'history._id': _id}, 
             {'$set': {
                 'history.$.status': 'completed',
         }})
