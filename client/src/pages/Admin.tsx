@@ -1,11 +1,9 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { useLocation } from "react-router-dom"
 
 const Admin = () => {
-  const { state } = useLocation()
-  const[data, setData] = useState<{_id: string, firstName: string, email: string, balance: Number}[]>(state)
+  const[data, setData] = useState<{_id?: string, firstName?: string, email?: string, balance?: Number}[]>()
 
   useEffect(() => {
     async function fetchAllUsers() {
@@ -13,7 +11,8 @@ const Admin = () => {
         const storedData = JSON.parse(localStorage.getItem("adminToken") as string)
         await axios.post('https://aspirebkrestapi.vercel.app/api/admin/allusers', { adminToken: storedData.adminToken })
         .then(res => {
-          setData(res.data)
+          const fliterAdmin = res.data.filter((val: any) => val.role != 'admin')
+          setData(fliterAdmin)
       })
       } catch (error) {
         console.error(error)
@@ -69,17 +68,17 @@ const Admin = () => {
           </thead>
           <tbody>
             {/* row 1 */}
-            {
+            { data &&
               data.map((val, index) => (
                 <tr key={index}>
                   <th>{index + 1}</th>
                   <td>{val.firstName}</td>
                   <td>{val.email}</td>
-                  <td>${val.balance.toString()}</td>
+                  <td>${val.balance?.toString()}</td>
                   <td><Link className="bg-red-700 text-white font-medium p-3 drop-shadow-md" 
                       to={'/userdetail/'+val._id} state={val}>View</Link></td>
                 </tr>
-              ))
+              )) 
             }
           </tbody>
         </table>

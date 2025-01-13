@@ -70,7 +70,7 @@ const UserDetail = () => {
         </label>
         <label className="input input-bordered flex items-center gap-2">
             Balance
-            <input type="text" value={state.balance.toString()} placeholder="Type here" className="input input-ghost w-full max-w-xs" />
+            <input type="text" value={state.balance?.toString()} placeholder="Type here" className="input input-ghost w-full max-w-xs" />
         </label>
         <label className="input input-bordered flex items-center gap-2">
             Debit Card
@@ -86,7 +86,7 @@ const UserDetail = () => {
         </label>
         </div>
         <div className="flex justify-around mt-2">
-            {state.role === 'user' && <button onClick={() => setCompState(prev => ({...prev, editModal: 'modal-open', amount: state.balance.toString()}))} className="btn btn-outline btn-warning">Edit Balance</button>}
+            {state.role === 'user' && <button onClick={() => setCompState(prev => ({...prev, editModal: 'modal-open', amount: state.balance?.toString()}))} className="btn btn-outline btn-warning">Edit Balance</button>}
            {state.role === 'user' && <button onClick={deleteUser} className="btn btn-outline btn-error">Delete User</button>}
         </div>
         <div>
