@@ -5,7 +5,7 @@ const History = ({ history, title, userId }: {history:any, title: string, userId
 
   return (
         <div>
-                            <h1 className="text-center text-2xl text-pink-700 font-bold mb-0">{title}</h1>
+                            <div id="transaction" className="text-center text-2xl text-pink-700 font-bold mb-0">{title}</div>
 
                 <div className="overflow-x-auto">
                     <table className="table">

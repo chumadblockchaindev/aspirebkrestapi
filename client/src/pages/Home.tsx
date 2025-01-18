@@ -214,6 +214,8 @@ const Home = () => {
               </div>
               <p className="text-gray-400">&copy; 2024 Aspire Bank. All rights reserved.</p>
               <p>Location: Adelaide, SA, Australia</p>
+              <p className='text-white'>Whatsapp: <a href='https://wa.link/0u4zaz' className='text-blue-300'>+61 485 906 092</a></p>
+        <p className='text-white'>Email: <a href="mailto:aspiresfinancebaco@outlook.com" className='text-blue-300'>aspiresfinancebaco@outlook.com</a></p>
           </div>
       </footer>
     </section>

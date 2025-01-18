@@ -142,6 +142,33 @@ export const userDeposit = async (req, res) => {
     }
 }
 
+export const approveDeposit = async (req, res) => {
+    // creates a transaction history and save in history array
+    try {
+        const _id = req.params.id;
+        const amount = req.body.amount;
+
+        // Update balance
+        const userExists = await User.findById(_id);
+
+        const updatedBalance = userExists.balance + Number(amount);
+
+        await User.findByIdAndUpdate(_id, { balance: updatedBalance });
+
+
+        // update transaction to success and add history balance to main balance
+        await User.updateOne({'history._id': req.body._id}, 
+            {'$set': {
+                'history.$.status': 'completed',
+        }})
+
+
+        res.status(200).json({ message: "Deposit Approved" })
+    } catch (error) {
+        res.status(500).json({ errorMessage: error.message });
+    }
+}
+
 export const retryTransfer = async (req, res) => {
     // creates a transaction history and save in history array
     try {

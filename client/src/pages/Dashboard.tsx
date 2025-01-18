@@ -3,6 +3,7 @@ import History from "../components/History"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import toast from "react-hot-toast"
+import AnchorLink from "react-anchor-link-smooth-scroll";
 
 export interface User {
      _id: string, 
@@ -99,7 +100,7 @@ function handleDeposit(e: FormEvent) {
     axios.put("https://aspirebkrestapi.vercel.app/api/user/deposit", finalData)
     .then(res => {
         if(res.status === 200) {
-            toast.success("Deposit Pending Contact Customer Support", { position: 'top-center' })
+            toast.success("Contact Customer Support To Complete Deposit", { position: 'top-center' })
             setDepositModal(!depositModal)
         }
     })
@@ -179,7 +180,7 @@ function handleTransFer(e: FormEvent) {
                     <button onClick={() => setTransferModal(true)} className="btn btn-active btn-error text-white"><i className="fa-solid fa-money-bill"></i>Send</button>
                     <button onClick={() => setDepositModal(true)} className="btn btn-active btn-error text-white"><i className="fa-solid fa-piggy-bank"></i>Receive</button>
                     <button onClick={() => setModal(prev => ({...prev, notifyModal: true, modalTitle: "Add Card", modalText: "Coming Soon"}))}  className="btn btn-active btn-error text-white"><i className="fa-solid fa-piggy-bank"></i>Add Card</button>
-                    <button onClick={() => navigate('/txn-history')} className="btn btn-active btn-error text-white col-span-2"><i className="fa-solid fa-piggy-bank"></i>Transaction History</button>
+                    <AnchorLink href="#transaction" className="btn btn-active btn-error text-white col-span-2"><i className="fa-solid fa-piggy-bank"></i>Transaction History</AnchorLink>
                     <button onClick={() => setModal(prev => ({...prev, notifyModal: true, modalTitle: "Loans", modalText: "Not Yet Eligible, Please Contact Support"}))}  className="btn btn-active btn-error text-white"><i className="fa-solid fa-piggy-bank"></i>Loans</button>
                     <div className="dropdown dropdown-bottom">
                         <div tabIndex={0} role="button" className="btn bg-error text-white m-1"><i className="fa-solid fa-money-bill"></i>Investment</div>

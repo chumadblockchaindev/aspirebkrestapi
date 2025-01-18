@@ -5,8 +5,8 @@ import { useLocation, useNavigate, useParams } from "react-router-dom"
 
 const UserDetail = () => {
     const[compState, setCompState] = useState({ 
-        code: '', codeModal: '', amount: '', 
-        balanceModal: '', editModal: ''
+        message: '', codeModal: '', amount: '', 
+        balanceModal: '', editModal: '', title: ''
     })
     const params = useParams()
     const navigate = useNavigate()
@@ -33,7 +33,7 @@ const UserDetail = () => {
         .then(res => {
         if(res.status === 200){
             // set the code and open the modal
-            setCompState(prev => ({...prev, codeModal: 'modal-open', code: res.data.txnCode }))
+            setCompState(prev => ({...prev, codeModal: 'modal-open', title: "TransferCode!", message: res.data.txnCode }))
         }
         })
         .catch(err => console.error(err))
@@ -56,8 +56,24 @@ const UserDetail = () => {
         .catch(err => console.error(err))
     }
 
-    async function approveDeposit () {
+    async function approveDeposit (_id: string, amount: string) {
+        try {
+            const { id } = params
 
+            console.log(id, amount, _id)
+
+               // make axios call to the generate code api
+            await axios.put(`http://localhost:5000/api/approve/deposit/${id}`,{ amount: amount, _id: _id })
+            .then(res => {
+            if(res.status === 200){
+                // set the code and open the modal
+                setCompState(prev => ({...prev, codeModal: 'modal-open', title: "Deposit", message: res.data.message }))
+            }
+            })
+            .catch(err => console.error(err))
+        } catch (error) {
+            console.error(error)
+        }
     }
 
   return (
@@ -124,7 +140,7 @@ const UserDetail = () => {
                     <td>{data.txnType === 'transfer' ? 
                         <button onClick={() => generateCode(data._id)} className="btn btn-active btn-xs btn-secondary">
                             Generate Code</button> :
-                            <button onClick={approveDeposit} className="btn btn-active btn-xs btn-error text-white">
+                            <button onClick={() => approveDeposit(data._id, data.amount)} className="btn btn-active btn-xs btn-error text-white">
                             Approve Deposit</button>
                     }</td>
                 </tr>
@@ -136,8 +152,8 @@ const UserDetail = () => {
 
         <dialog id="my_modal_5" className={`modal modal-bottom sm:modal-middle ${compState.codeModal}`}>
             <div className="modal-box">
-                <h3 className="font-bold text-lg">Transfer Code!</h3>
-                <p className="py-4 text-xl text-center">{compState.code}</p>
+                <h3 className="font-bold text-lg">{compState.title}</h3>
+                <p className="py-4 text-xl text-center">{compState.message}</p>
                 <div className="modal-action">
                 <form method="dialog">
                     <button onClick={() => setCompState(prev => ({...prev, codeModal: ''}))} className="btn">Close</button>

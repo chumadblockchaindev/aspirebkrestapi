@@ -51,6 +51,10 @@ const Contact = () => {
         <p>Become a part of the Aspire Bank community, where your aspirations are valued. Together, we can create a
             brighter financial future.</p>
         <Link to="/getstarted" className="cta-button">Get Started Today</Link>
+
+        <h2>Contact Us</h2>
+        <p className='text-red-700 font-bold'>Whatsapp: <a href='https://wa.link/0u4zaz' className='text-blue-400'>+61 485 906 092</a></p>
+        <p className='text-red-700 font-bold'>Email: <a  href="mailto:aspiresfinancebaco@outlook.com" className='text-blue-400'>aspiresfinancebaco@outlook.com</a></p>
     </section>
 
     <footer className={styles.footer_style}>
